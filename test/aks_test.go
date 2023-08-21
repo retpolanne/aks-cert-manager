@@ -3,6 +3,7 @@ package test
 import (
 	"flag"
 	"os"
+	"strings"
 	"testing"
 
 	"github.com/gruntwork-io/terratest/modules/azure"
@@ -57,4 +58,20 @@ func TestAKSHasCertManagerInstalled(t *testing.T) {
 	k8sOptions := getKubectlOptions("cert-manager")
 	deployment := k8s.GetDeployment(t, k8sOptions, "cert-manager")
 	assert.True(t, k8s.IsDeploymentAvailable(deployment))
+}
+
+func TestAKSCertManagerHasCRDs(t *testing.T) {
+	k8sOptions := getKubectlOptions("cert-manager")
+	out, err := k8s.RunKubectlAndGetOutputE(t, k8sOptions, "get", "crd")
+	if err != nil {
+		t.Fatalf("Error running kubectl get crd %s\n", err)
+	}
+	crdExists := false
+	crd := "cert-manager.io"
+	for _, line := range strings.Split(out, "\n") {
+		if strings.Contains(line, crd) {
+			crdExists = true
+		}
+	}
+	assert.Truef(t, crdExists, "expected %s to exist\n", crd)
 }

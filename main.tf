@@ -28,3 +28,17 @@ resource "local_file" "kubeconfig" {
 	content  = azurerm_kubernetes_cluster.terratest_aks_certmanager.kube_config_raw
   filename = "./kubeconfig" 
 }
+
+resource "helm_release" "cert_manager" {
+  name             = "cert-manager"
+  namespace        = "cert-manager"
+  create_namespace = true
+
+  repository = "https://charts.jetstack.io"
+  chart      = "cert-manager"
+
+  set {
+    name  = "installCRDs"
+    value = "true"
+  }
+}
