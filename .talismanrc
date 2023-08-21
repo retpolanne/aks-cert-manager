@@ -1,0 +1,8 @@
+fileignoreconfig:
+- filename: .terraform.lock.hcl
+  checksum: 326273a7d6506de2db32c0f950629b60ee03d869ad1b2c42c7620ffc1b88e332
+- filename: go.sum
+  checksum: 522dbd4a2c082b41a4b2aee1d67ce77f488544f3aa04e2f0237f72c80bb24ad7
+- filename: .gitignore
+  checksum: 12bb18db11a723cd152c2d6f5feb08588c371365924a9047094ea8e2f4c878e8
+version: ""
